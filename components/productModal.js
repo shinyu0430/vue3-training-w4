@@ -1,61 +1,67 @@
 const apiData = {
-    url: 'https://vue3-course-api.hexschool.io/v2',
-    path: 'record-product',
-  }
+  url: 'https://vue3-course-api.hexschool.io/v2',
+  path: 'record-product'
+}
 
 export default {
-    props: {
-      product: {
-        default() {
-          return { 
-            imagesUrl: [],
-          }
-        }
-      },
-      modal: {
-        default: false,
-      },
+  props: {
+    product: {
+      type: Object,
+      required: true
     },
-    data() {
-      return {
-      };
-    },
+    isNew: {
+      default: false
+    }
+  },
+  data () {
+    return {
+    }
+  },
 
-    methods: {
-      updateProduct() {
-        // 新增商品
-        let api = `${apiData.url}/api/${apiData.path}/admin/product`;
-        let httpMethod = 'post';
-        // 編輯商品
-        if (!this.modal) {
-          api = `${apiData.url}/api/${apiData.path}/admin/product/${this.product.id}`;
-          httpMethod = 'put';
-        }
-
-        axios[httpMethod](api, { data: this.product }).then((response) => {
-          if(response.data.success){
-            alert(response.data.message);
-            this.$emit('update');
-          } else {
-            alert(response.data.message);
-          }
-        }).catch((error) => {
-          alert(error.data.message);
-        });
-      },
-      createImages() {
-        this.product.imagesUrl = [];
-        this.product.imagesUrl.push('');
-      },
+  methods: {
+    openModal () {
+      this.productModal.show()
     },
-    template:`
-      <div id="productModal" ref="modal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
+    hideModal () {
+      this.productModal.hide()
+    },
+    updateProduct () {
+      // 新增商品
+      let api = `${apiData.url}/api/${apiData.path}/admin/product`
+      let httpMethod = 'post'
+      
+      // 編輯商品
+      if (!this.isNew) {
+        api = `${apiData.url}/api/${apiData.path}/admin/product/${this.product.id}`
+        httpMethod = 'put'
+      }
+
+      axios[httpMethod](api, { data: this.product }).then((response) => {
+        alert(response.data.message)
+        this.$emit('update')
+      }).catch((error) => {
+        alert(error.data.message)
+      })
+    },
+    createImages () { // 新增商品-新增副圖
+      this.product.imagesUrl = []
+      this.product.imagesUrl.push('')
+    }
+  },
+  mounted () {
+    this.productModal = new bootstrap.Modal(this.$refs.productModal, {
+      keyboard: false,
+      backdrop: 'static'
+    })
+  },
+  template: `
+      <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content border-0">
             <div class="modal-header bg-dark text-white">
               <h5 id="productModalLabel" class="modal-title">
-                <span v-if="modal">新增產品</span>
+                <span v-if="isNew">新增產品</span>
                 <span v-else>編輯產品</span>
               </h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

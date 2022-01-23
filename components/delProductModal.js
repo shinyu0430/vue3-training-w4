@@ -1,44 +1,52 @@
 const api = {
-    url: 'https://vue3-course-api.hexschool.io/v2',
-    path: 'record-product',
-  }
+  url: 'https://vue3-course-api.hexschool.io/v2',
+  path: 'record-product'
+}
 
 export default {
   props: {
     item: {
       type: Object,
-      default() {
-        return {};
-      },
+      default () {
+        return {}
+      }
     },
     modal: {
-        default: false,
-      }
+      default: false
+    }
   },
-  data() {
+  data () {
     return {
-    };
+    }
   },
 
   methods: {
-    delProduct() {   
+    openModal () {
+      this.delModal.show()
+    },
+    hideModal () {
+      this.delModal.hide()
+    },
+    delProduct () {
       axios
         .delete(`${api.url}/api/${api.path}/admin/product/${this.item.id}`)
         .then((response) => {
-          if (response.data.success) {
-            alert(response.data.message);
-            this.$emit("update");
-          } else {
-            alert(response.data.message);
-          }
+          alert(response.data.message)
+          this.$emit('update')
         })
         .catch((error) => {
-          alert(error.data.message);
-        });
-    },
+          alert(error.data.message)
+        })
+    }
   },
-  template:`
-  <div id="delProductModal" ref="modal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel"
+  mounted () {
+    this.delModal = new bootstrap.Modal(this.$refs.delProductModal, {
+      keyboard: false,
+      backdrop: 'static'
+    })
+  },
+  template: `
+  <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content border-0">
@@ -64,4 +72,4 @@ export default {
     </div>
   </div>
 `
-};
+}

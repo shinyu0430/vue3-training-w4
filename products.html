@@ -71,7 +71,7 @@
         <pagination :pages="pagination" @emit-pages="getData"></pagination>
       </div>
 
-      <product-modal ref="productModal" :product="tempProduct" :modal="modal" @update="hideModal('edit')"></product-modal>
+      <product-modal ref="productModal" :product="tempProduct" :is-new="isNew" @update="hideModal('edit')"></product-modal>
       <del-product-modal ref="delProductModal" :item="tempProduct" @update="hideModal('del')"></del-product-modal>
     </div>
 

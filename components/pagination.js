@@ -1,22 +1,15 @@
 export default {
-    data() {
-        return {
-          };
-    },
-    props: {
-      pages:{
-        default() {
-          return { 
-          }
-        }
-      }
-    },
-    methods: {
-      emitPages(item) {
-        this.$emit('emit-pages', item);
-      },
-    },
-    template:`<nav aria-label="Page navigation example">
+  data () {
+    return {
+    }
+  },
+  props: ['pages'],
+  methods: {
+    emitPages (item) {
+      this.$emit('emit-pages', item)
+    }
+  },
+  template: `<nav aria-label="Page navigation example">
     <ul class="pagination">
       <li
         class="page-item"
